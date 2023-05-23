@@ -1,6 +1,9 @@
 package com.example.springboot.db;
 
 import java.sql.*;
+import java.util.Map;
+
+import static java.lang.System.getenv;
 
 public class ConnectionChecker {
 
@@ -11,9 +14,13 @@ public class ConnectionChecker {
 
     public static Connection getConn() throws SQLException, ClassNotFoundException {
         if(connection == null) {
+            Map<String, String> env = getenv();
+            String dbHost = env.get("DB_HOST");
+            String dbUser = env.get("DB_USER");
+            String dbPassword = env.get("DB_PASSWORD");
+
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/spring-db", "root", "1234");
+            Connection conn = DriverManager.getConnection(dbHost, dbUser, dbPassword);
             stmt = conn.createStatement();
         }
         return connection;
@@ -33,7 +40,7 @@ public class ConnectionChecker {
         stmt.execute("CREATE TABLE `spring-db`.`user` (" +
                 "  `id` INT NOT NULL AUTO_INCREMENT," +
                 "  `name` VARCHAR(45) NOT NULL," +
-                "  `phone` VARCHAR(45) NOT NULL," +
+                "  `password` VARCHAR(45) NOT NULL," +
                 "  PRIMARY KEY (`id`));");
         System.out.println("create UserTable");
     }
@@ -59,18 +66,18 @@ public class ConnectionChecker {
     }
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-
+//
 //        ConnectionChecker.deleteAllUser();
         ConnectionChecker.getConn();
         ConnectionChecker.dropUserTable();
         ConnectionChecker.createUserTable();
-
-        ConnectionChecker.createUser("kyeongrok","1577");
-        ConnectionChecker.createUser("Ronaldo", "1544");
-        ConnectionChecker.createUser("Messi","1566");
-        ConnectionChecker.createUser("Dukbae","1588");
-        ConnectionChecker.updateUserName(2,"newUserName");
-
-        ConnectionChecker.select();
+//
+//        ConnectionChecker.createUser("kyeongrok","1577");
+//        ConnectionChecker.createUser("Ronaldo", "1544");
+//        ConnectionChecker.createUser("Messi","1566");
+//        ConnectionChecker.createUser("Dukbae","1588");
+//        ConnectionChecker.updateUserName(2,"newUserName");
+//
+//        ConnectionChecker.select();
     }
 }
