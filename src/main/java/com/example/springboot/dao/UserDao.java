@@ -4,9 +4,11 @@ import com.example.springboot.domain.User;
 
 import java.sql.*;
 
-public abstract class UserDao {
+public class UserDao {
+
+    SimpleConnectionMaker connectionMaker = new SimpleConnectionMaker();
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection conn = getConnection();
+        Connection conn = connectionMaker.makeNewConnection();
 
         PreparedStatement pstmt = conn.prepareStatement("Insert Into `spring-db`.`user`(id, name, password) VALUES(?,?,?)");
         pstmt.setString(1, user.getId());
@@ -20,7 +22,7 @@ public abstract class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection conn = getConnection();
+        Connection conn = connectionMaker.makeNewConnection();
 
         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM USER WHERE id = ?");
         pstmt.setString(1,id);
@@ -36,12 +38,12 @@ public abstract class UserDao {
         return user;
     }
 
-    public abstract Connection getConnection() throws ClassNotFoundException, SQLException ;
+//    public abstract Connection getConnection() throws ClassNotFoundException, SQLException ;
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao userDao = new NUserDao();
+        UserDao userDao = new UserDao();
         userDao.add(new User("14", "Hyuk", "qwer"));
-        User user = userDao.get("13");
+        User user = userDao.get("14");
         System.out.println(user.getId() +" " + user.getName() + " " + user.getPassword());
     }
 }

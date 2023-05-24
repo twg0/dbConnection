@@ -7,8 +7,7 @@ import java.util.Map;
 
 import static java.lang.System.getenv;
 
-public class NUserDao extends UserDao{
-    @Override
+public class NUserDao {
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         Map<String, String> env = getenv();
         String dbHost = env.get("DB_HOST");
