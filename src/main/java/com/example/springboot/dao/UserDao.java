@@ -6,14 +6,16 @@ import java.sql.*;
 
 public class UserDao {
 
-    SimpleConnectionMaker connectionMaker;
+    ConnectionMaker connectionMaker;
 
-    public UserDao() {
-        connectionMaker = new SimpleConnectionMaker();
+    public UserDao() {}
+
+    public UserDao(ConnectionMaker connectionMaker) {
+        this.connectionMaker = connectionMaker;
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection conn = connectionMaker.makeNewConnection();
+        Connection conn = connectionMaker.makeConnection();
 
         PreparedStatement pstmt = conn.prepareStatement("Insert Into `spring-db`.`user`(id, name, password) VALUES(?,?,?)");
         pstmt.setString(1, user.getId());
@@ -27,7 +29,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection conn = connectionMaker.makeNewConnection();
+        Connection conn = connectionMaker.makeConnection();
 
         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM USER WHERE id = ?");
         pstmt.setString(1,id);
