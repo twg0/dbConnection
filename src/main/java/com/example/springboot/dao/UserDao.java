@@ -46,11 +46,4 @@ public class UserDao {
     }
 
 //    public abstract Connection getConnection() throws ClassNotFoundException, SQLException ;
-
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao userDao = new UserDao();
-        userDao.add(new User("14", "Hyuk", "qwer"));
-        User user = userDao.get("14");
-        System.out.println(user.getId() +" " + user.getName() + " " + user.getPassword());
-    }
 }
